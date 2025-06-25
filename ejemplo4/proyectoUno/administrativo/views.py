@@ -92,7 +92,7 @@ def eliminar_estudiante(request, id):
 
 def listar_paises(request):
     paises = Pais.objects.all()
-    contexto = {
+    contexto = {   
         'paises': paises,
         'total': paises.count(),
     }
