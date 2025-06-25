@@ -31,3 +31,36 @@
   {% endfor %}
 
 </table>
+
+<hr>
+
+<h3>Lista de Estudiantes</h3>
+<table border="1px">
+  <tr>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Tipo</th>
+    <th>Edad</th>
+    <th>Matrículas</th>
+  </tr>
+
+  {% for s in estudiantes %}
+    <tr>
+      <td>{{ s.nombre }}</td>
+      <td>{{ s.apellido }}</td>
+      <td>{{ s.get_tipo_estudiante_display }}</td>
+      <td>{{ s.edad }}</td>
+
+      <td>
+        {% for m in s.obtener_matriculas %}
+          Módulo: {{ m.modulo.nombre }}<br>
+          Costo: {{ m.costo|floatformat:0 }}<br><br>
+        {% empty %}
+          — Sin matrículas —
+        {% endfor %}
+        <strong>Costo Total: {{ s.costo_total|floatformat:0 }}</strong>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+

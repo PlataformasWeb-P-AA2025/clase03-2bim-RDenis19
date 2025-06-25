@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum  
 
 # Create your models here.
 
@@ -26,8 +27,10 @@ class Estudiante(models.Model):
 
     def obtener_matriculas(self):
         return self.lasmatriculas.all()
-        
 
+    def costo_total(self):
+        return (self.lasmatriculas.aggregate(total=Sum('costo'))['total'] or 0)
+    
 class Modulo(models.Model):
     """
     """
@@ -56,7 +59,8 @@ class Matricula(models.Model):
     modulo = models.ForeignKey(Modulo, related_name='lasmatriculas',
             on_delete=models.CASCADE)
     comentario = models.CharField(max_length=200)
-
+    costo = models.DecimalField("costo", max_digits=7, decimal_places=2, default=0)
+    
     def __str__(self):
-        return "Matricula: Estudiante(%s) - Modulo(%s)" % \
-                (self.estudiante, self.modulo.nombre)
+        return f"Matricula: Estudiante({self.estudiante}) - " \
+               f"Modulo({self.modulo.nombre}) - ${self.costo}"
